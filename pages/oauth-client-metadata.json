@@ -1,0 +1,13 @@
+{
+  "client_id": "https://turtlepaw.github.io/beryl/oauth-client-metadata.json",
+  "client_name": "Beryl",
+  "client_uri": "https://turtlepaw.github.io/beryl",
+  "logo_uri": "https://turtlepaw.github.io/beryl/icon.png",
+  "redirect_uris": ["beryl://oauth/callback"],
+  "scope": "atproto transition:generic",
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "application_type": "native",
+  "dpop_bound_access_tokens": true
+}

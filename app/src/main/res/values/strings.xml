@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Beryl</string>
+    <string name="service_label">Beryl Sync</string>
+</resources>
