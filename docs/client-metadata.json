@@ -1,9 +1,9 @@
 {
-  "client_id": "https://beryl.turtlepaw.io/client-metadata.json",
+  "client_id": "https://turtlepaw.github.io/beryl/client-metadata.json",
   "client_name": "Beryl",
-  "client_uri": "https://beryl.turtlepaw.io",
+  "client_uri": "https://turtlepaw.github.io/beryl",
   "redirect_uris": [
-    "https://beryl.turtlepaw.io/oauth/callback"
+    "https://turtlepaw.github.io/beryl/oauth/callback"
   ],
   "scope": "atproto transition:generic",
   "grant_types": [
