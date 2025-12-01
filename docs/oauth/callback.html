@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beryl - OAuth Callback</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+        }
+        .emoji {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+        p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🦋</div>
+        <h1>Authentication Successful!</h1>
+        <div class="spinner"></div>
+        <p>Redirecting you back to the Beryl app...</p>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        // Extract OAuth callback parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        const error = urlParams.get('error');
+
+        const statusEl = document.getElementById('status');
+
+        if (error) {
+            statusEl.textContent = `Error: ${error}`;
+            document.querySelector('h1').textContent = 'Authentication Failed';
+            document.querySelector('.spinner').style.display = 'none';
+        } else if (code) {
+            // Try to redirect to the app via custom scheme
+            const appUrl = `io.github.turtlepaw.beryl://oauth/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state || '')}`;
+            
+            // Try to open the app
+            window.location.href = appUrl;
+            
+            // If still here after 2 seconds, show manual instructions
+            setTimeout(() => {
+                statusEl.innerHTML = `
+                    <br><br>
+                    <strong>If the app didn't open automatically:</strong><br>
+                    Please copy this code and paste it in the app:<br>
+                    <code style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 4px; display: inline-block; margin-top: 8px; word-break: break-all;">
+                        ${code}
+                    </code>
+                `;
+            }, 2000);
+        } else {
+            statusEl.textContent = 'Invalid callback - missing authorization code';
+            document.querySelector('h1').textContent = 'Invalid Request';
+            document.querySelector('.spinner').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
